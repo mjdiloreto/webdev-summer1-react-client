@@ -12,15 +12,21 @@ export default class ModuleListItem
     this.moduleService = ModuleService.instance;
 
     this.deleteModule = this.deleteModule.bind(this);
+    this.setActive = this.setActive.bind(this);
   }
 
   deleteModule() {
     this.moduleService.deleteModule(this.props.module.id);
   }
 
+  setActive() {
+    this.props.on_click(this.props.module.id)
+  }
+
   render() {
     return (
-      <li className={"list-group-item " + this.props.class_name} style={moduleFontStyle}>
+      <li className={"list-group-item " + this.props.class_name} style={moduleFontStyle}
+        onClick={this.setActive}>
         {this.props.module.title}
         <span className="float-right">
           <i className="fa fa-trash" onClick={this.deleteModule} title="delete module" style={iconStyle}></i>

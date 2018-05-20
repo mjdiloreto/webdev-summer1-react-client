@@ -7,7 +7,7 @@ export default class ModuleList extends Component {
     super(props);
     this.state = {
       courseId: '',
-      activeModule: {},
+      activeModule: {id: 0},
       module: { title: '' },
       modules: []
     };
@@ -15,12 +15,12 @@ export default class ModuleList extends Component {
     this.titleChanged = this.titleChanged.bind(this);
 
     this.setCourseId = this.setCourseId.bind(this);
+    this.setActiveModule = this.setActiveModule.bind(this);
 
     this.moduleService = ModuleService.instance;
 
   }
   setModules(modules) {
-    console.log("setting modules " + modules[1].id)
     this.setState({modules: modules})
   }
   findAllModulesForCourse(courseId) {
@@ -30,13 +30,12 @@ export default class ModuleList extends Component {
   }
   setActiveModule(moduleId) {
     this.setState({activeModule: this.findModuleById(moduleId)});
-    this.render();
   }
   findModuleById(moduleId) {
       for (let module of this.state.modules) {
         console.log("module id is " + module.id)
           if (module.id === moduleId) {
-            this.setState({activeModule: module});
+            return module;
           }
       }
   }
@@ -60,18 +59,21 @@ export default class ModuleList extends Component {
     this.setState({module: {title: event.target.value}});
   }
   renderListOfModules() {
-    let active_module = this.state.activeModule;
+    console.log("active module is ");
+    console.log(this.state.activeModule);
 
     let modules = this.state.modules.map(function(module){
-      if (module.id === active_module.id) {
+      if (module.id === this.state.activeModule.id) {
         return <ModuleListItem class_name="active"
                                module={module}
-                               key={module.id}/>
+                               key={module.id}
+                               on_click={this.setActiveModule.bind(this)}/>
       }
       return <ModuleListItem class_name=" "
                              module={module}
-                             key={module.id}/>
-    });
+                             key={module.id}
+                             on_click={this.setActiveModule.bind(this)}/>
+    }, this);
     return modules;
   }
   render() {
