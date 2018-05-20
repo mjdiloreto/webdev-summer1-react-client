@@ -23,8 +23,6 @@ class CourseList extends React.Component {
   renderCourseRows() {
     let courses = null;
 
-    console.log("render coruse rows")
-    console.log(this.state)
     if(this.state) {
       courses = this.state.courses.map(
         function (course) {
