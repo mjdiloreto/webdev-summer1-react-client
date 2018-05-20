@@ -28,6 +28,10 @@ export default class ModuleService {
     { return response.json(); })
   }
 
+  deleteModule(moduleId) {
+    console.log("deleting module from service")
+  }
+
   static get instance() {
     if(!this[_singleton])
       this[_singleton] = new ModuleService(_singleton);

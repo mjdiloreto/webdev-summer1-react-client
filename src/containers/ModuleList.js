@@ -7,6 +7,7 @@ export default class ModuleList extends Component {
     super(props);
     this.state = {
       courseId: '',
+      activeModule: {},
       module: { title: '' },
       modules: []
     };
@@ -16,15 +17,28 @@ export default class ModuleList extends Component {
     this.setCourseId = this.setCourseId.bind(this);
 
     this.moduleService = ModuleService.instance;
+
   }
   setModules(modules) {
-    console.log("setting modules " + modules[1].title)
+    console.log("setting modules " + modules[1].id)
     this.setState({modules: modules})
   }
   findAllModulesForCourse(courseId) {
     this.moduleService
       .findAllModulesForCourse(courseId)
       .then((modules) => {this.setModules(modules)});
+  }
+  setActiveModule(moduleId) {
+    this.setState({activeModule: this.findModuleById(moduleId)});
+    this.render();
+  }
+  findModuleById(moduleId) {
+      for (let module of this.state.modules) {
+        console.log("module id is " + module.id)
+          if (module.id === moduleId) {
+            this.setState({activeModule: module});
+          }
+      }
   }
   setCourseId(courseId) {
     this.setState({courseId: courseId});
@@ -46,8 +60,16 @@ export default class ModuleList extends Component {
     this.setState({module: {title: event.target.value}});
   }
   renderListOfModules() {
+    let active_module = this.state.activeModule;
+
     let modules = this.state.modules.map(function(module){
-      return <ModuleListItem module={module}
+      if (module.id === active_module.id) {
+        return <ModuleListItem class_name="active"
+                               module={module}
+                               key={module.id}/>
+      }
+      return <ModuleListItem class_name=" "
+                             module={module}
                              key={module.id}/>
     });
     return modules;
