@@ -10,16 +10,19 @@ export default class CourseManager
     return (
       <Router>
         <div className="container-fluid">
-          
+
           <nav className="navbar navbar-dark bg-primary">
             <a className="text-white navbar-brand container-fullwidth">Course Manager</a>
           </nav>
 
-          <CourseList/>
+          <Route exact path="/"
+                 component={CourseList}>
+          </Route>
 
           <Route path="/course/:courseId"
                  component={CourseEditor}>
           </Route>
+
 
         </div>
       </Router>
