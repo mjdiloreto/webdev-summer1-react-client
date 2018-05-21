@@ -1,31 +1,19 @@
 import React, {Component} from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 export default class NavBar
     extends Component {
     render() {
         return (
-            <Router>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">Course List</a>
-                    </li>
-                </ul>
-
-                <div className="container-fluid">
-
-                    <Route path="/courses"
-                           component={CourseList}>
-                    </Route>
-                    <Route path="/course/:courseId"
-                           component={CourseEditor}>
-                    </Route>
-
-                </div>
-            </Router>
+            <nav className="navbar navbar-dark bg-primary">
+                <a className="text-white navbar-brand container-fullwidth">Course Manager</a>
+                <form className="form-inline">
+                    <input className="form-control mr-sm-2" type="search" placeholder="New Course Title"/>
+                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
+                        <i className="fa fa-plus"/>
+                    </button>
+                </form>
+            </nav>
         )
     }
 }

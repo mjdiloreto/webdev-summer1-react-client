@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import CourseEditor from './CourseEditor'
 import CourseList from "./CourseList";
 import {BrowserRouter as Router, Route} from 'react-router-dom'
+import NavBar from "../components/NavBar";
 
 export default class CourseManager
   extends Component {
@@ -9,10 +10,13 @@ export default class CourseManager
     return (
       <Router>
         <div className="container-fluid">
+          
+          <nav className="navbar navbar-dark bg-primary">
+            <a className="text-white navbar-brand container-fullwidth">Course Manager</a>
+          </nav>
 
-          <Route path="/courses"
-                 component={CourseList}>
-          </Route>
+          <CourseList/>
+
           <Route path="/course/:courseId"
                  component={CourseEditor}>
           </Route>
