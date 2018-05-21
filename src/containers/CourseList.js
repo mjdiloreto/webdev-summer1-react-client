@@ -8,6 +8,7 @@ class CourseList extends React.Component {
     this.courseService = CourseService.instance;
     this.titleChanged = this.titleChanged.bind(this);
     this.createCourse = this.createCourse.bind(this);
+    this.unmountRow = this.unmountRow.bind(this);
   }
   componentDidMount() {
     this.findAllCourses();
@@ -16,18 +17,23 @@ class CourseList extends React.Component {
     this.courseService
       .findAllCourses()
       .then((courses) => {
-        console.log(courses);
         this.setState({courses: courses});
       })
   }
+  unmountRow(id) {
+    this.state.courses.filter((c) => c.id !== id);
+    this.findAllCourses();
+  }
   renderCourseRows() {
     let courses = null;
+    let unmountRow = this.unmountRow.bind(this);
 
     if(this.state) {
       courses = this.state.courses.map(
         function (course) {
           return <CourseRow key={course.id}
-                            course={course}/>
+                            course={course}
+                            unmount={unmountRow}/>
         }
       )
     }

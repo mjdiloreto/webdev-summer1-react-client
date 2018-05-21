@@ -33,7 +33,6 @@ export default class ModuleList extends Component {
   }
   findModuleById(moduleId) {
       for (let module of this.state.modules) {
-        console.log("module id is " + module.id)
           if (module.id === moduleId) {
             return module;
           }
@@ -55,13 +54,9 @@ export default class ModuleList extends Component {
       .createModule(this.props.courseId, this.state.module)
   }
   titleChanged(event) {
-    console.log(event.target.value);
     this.setState({module: {title: event.target.value}});
   }
   renderListOfModules() {
-    console.log("active module is ");
-    console.log(this.state.activeModule);
-
     let modules = this.state.modules.map(function(module){
       if (module.id === this.state.activeModule.id) {
         return <ModuleListItem class_name="active"
