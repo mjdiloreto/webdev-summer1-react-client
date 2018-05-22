@@ -16,7 +16,8 @@ export default class ModuleListItem
   }
 
   deleteModule() {
-    this.moduleService.deleteModule(this.props.module.id);
+    this.moduleService.deleteModule(this.props.module.id)
+        .then(this.props.unmount(this.props.module.id));
   }
 
   setActive() {

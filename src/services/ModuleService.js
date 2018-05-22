@@ -1,6 +1,6 @@
 
-const MODULE_API_URL =
-  'http://localhost:8080/api/course/CID/module';
+const HOST = 'http://localhost:8080'
+const MODULE_API_URL = HOST + '/api/course/CID/module';
 
 let _singleton = Symbol();
 export default class ModuleService {
@@ -29,7 +29,12 @@ export default class ModuleService {
   }
 
   deleteModule(moduleId) {
-    console.log("deleting module from service")
+      console.log("attempting to delete module")
+    return fetch(HOST + '/api/module/' + moduleId,
+        {
+          method: "DELETE"
+        }
+    )
   }
 
   static get instance() {

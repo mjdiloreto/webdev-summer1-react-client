@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import CourseEditor from './CourseEditor'
 import CourseList from "./CourseList";
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-import NavBar from "../components/NavBar";
 
 export default class CourseManager
   extends Component {

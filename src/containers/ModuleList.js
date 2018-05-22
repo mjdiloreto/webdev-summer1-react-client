@@ -16,12 +16,16 @@ export default class ModuleList extends Component {
 
     this.setCourseId = this.setCourseId.bind(this);
     this.setActiveModule = this.setActiveModule.bind(this);
+    this.unmountModule = this.unmountModule.bind(this);
 
     this.moduleService = ModuleService.instance;
-
   }
   setModules(modules) {
     this.setState({modules: modules})
+  }
+  unmountModule(id) {
+    this.state.modules.filter((module) => module.id !== id);
+    this.findAllModulesForCourse(this.state.courseId);
   }
   findAllModulesForCourse(courseId) {
     this.moduleService
@@ -52,6 +56,7 @@ export default class ModuleList extends Component {
     console.log(this.state.module);
     this.moduleService
       .createModule(this.props.courseId, this.state.module)
+        .then(() => this.findAllModulesForCourse(this.state.courseId));
   }
   titleChanged(event) {
     this.setState({module: {title: event.target.value}});
@@ -62,11 +67,13 @@ export default class ModuleList extends Component {
         return <ModuleListItem class_name="active"
                                module={module}
                                key={module.id}
+                               unmount={this.unmountModule.bind(this)}
                                on_click={this.setActiveModule.bind(this)}/>
       }
       return <ModuleListItem class_name=" "
                              module={module}
                              key={module.id}
+                             unmount={this.unmountModule.bind(this)}
                              on_click={this.setActiveModule.bind(this)}/>
     }, this);
     return modules;
