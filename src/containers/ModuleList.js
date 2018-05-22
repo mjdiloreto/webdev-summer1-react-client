@@ -9,7 +9,8 @@ export default class ModuleList extends Component {
       courseId: '',
       activeModule: {id: 0},
       module: { title: '' },
-      modules: []
+      modules: [],
+      onActiveModuleChange: props.onActiveModuleChange
     };
     this.createModule = this.createModule.bind(this);
     this.titleChanged = this.titleChanged.bind(this);
@@ -33,6 +34,7 @@ export default class ModuleList extends Component {
       .then((modules) => {this.setModules(modules)});
   }
   setActiveModule(moduleId) {
+    this.state.onActiveModuleChange(moduleId);
     this.setState({activeModule: this.findModuleById(moduleId)});
   }
   findModuleById(moduleId) {
@@ -53,7 +55,6 @@ export default class ModuleList extends Component {
     this.findAllModulesForCourse(newProps.courseId)
   }
   createModule() {
-    console.log(this.state.module);
     this.moduleService
       .createModule(this.props.courseId, this.state.module)
         .then(() => this.findAllModulesForCourse(this.state.courseId));

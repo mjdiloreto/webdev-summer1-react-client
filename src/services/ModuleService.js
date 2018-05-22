@@ -29,7 +29,6 @@ export default class ModuleService {
   }
 
   deleteModule(moduleId) {
-      console.log("attempting to delete module")
     return fetch(HOST + '/api/module/' + moduleId,
         {
           method: "DELETE"

@@ -6,29 +6,47 @@ export default class LessonTabs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            moduleId: props.moduleId,
             title: "",
-            lessons: []
+            lessons: [],
         }
         this.lessonService = LessonService.instance;
 
         this.titleChanged = this.titleChanged.bind(this);
-        this.createLesson = this.createLesson.bind(this)
+        this.createLesson = this.createLesson.bind(this);
+        this.renderLessons = this.renderLessons.bind(this);
     }
 
     componentDidMount() {
-        this.setModuleId(this.props.moduleId)
-        this.findLessonsForModule(this.state.moduleId);
-
-        console.log(this.state);
+        this.setModuleId(this.props.moduleId);
+        this.findLessonsForModule(this.props.moduleId);
     }
 
     setModuleId(moduleId) {
         this.setState({moduleId: moduleId})
     }
 
+    componentWillReceiveProps(newProps){
+        this.setModuleId(newProps.moduleId);
+        this.findLessonsForModule(newProps.moduleId);
+    }
+
     findLessonsForModule(moduleId) {
+        // this.lessonService.findAllLessons()
+        // .then((lessons) => {
+        //     console.log(lessons);
+        //     this.setState({lessons: lessons})
+        // });
+
+        // No module has been selected
+        if(moduleId === null) {
+            return;
+        }
+
         this.lessonService.findAllLessonsForModule(moduleId)
-            .then((lessons) => this.setState({lessons: lessons}));
+            .then((lessons) => {
+                this.setState({lessons: lessons});
+            });
     }
 
     createLesson() {
@@ -40,20 +58,23 @@ export default class LessonTabs extends React.Component {
     }
 
     renderLessons() {
+        console.log("lessons");
+        console.log(this.state.lessons)
         let lessons = this.state.lessons.map((lesson) => {
           return <li className="nav-item"><a className="nav-link active"
                                              href="#">{lesson.title}</a></li>
-        })
-        return lessons;
+        });
+        return lessons
+        // let l = "" + JSON.stringify(this.state);
+        // return <p>{l}</p>;
     }
 
     render() { return(
         <div>
-
-            <nav class="navbar">
-                <a class="navbar-brand">Lessons</a>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2"
+            <nav className="navbar">
+                <a className="navbar-brand">Lessons</a>
+                <form className="form-inline">
+                    <input className="form-control mr-sm-2"
                            type="search"
                            placeholder="New Lesson Name"
                            onChange={this.titleChanged}/>
@@ -66,7 +87,7 @@ export default class LessonTabs extends React.Component {
             </nav>
 
             <ul className="nav nav-tabs">
-                {this.renderLessons}
+                {this.renderLessons()}
             </ul>
         </div>
       );

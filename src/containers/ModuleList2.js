@@ -25,7 +25,6 @@ class ModuleList2 extends React.Component {
   }
 
   titleChanged(event) {
-    console.log(event.target.value);
     this.setState({module: {title: event.target.value}});
   }
 

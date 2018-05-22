@@ -7,8 +7,12 @@ export default class CourseEditor
 
   constructor(props) {
     super(props)
-    this.state = {courseId: ''};
+    this.state = {
+        courseId: '',
+        activeModuleId: null
+    }
     this.selectCourse = this.selectCourse.bind(this);
+    this.changeActiveModule = this.changeActiveModule.bind(this);
   }
 
   componentDidMount() {
@@ -20,15 +24,21 @@ export default class CourseEditor
     this.setState({courseId: courseId});
   }
 
+  changeActiveModule(moduleId) {
+    console.log("setting new module to " + moduleId);
+    this.setState({activeModuleId: moduleId});
+  }
+
   render() { return(
     <div>
       <h2>Editing course: {this.state.courseId}</h2>
       <div className="row">
         <div className="col-4">
-          <ModuleList courseId={this.state.courseId}/>
+          <ModuleList courseId={this.state.courseId}
+            onActiveModuleChange={this.changeActiveModule.bind(this)}/>
         </div>
         <div className="col-8">
-          <LessonTabs/>
+          <LessonTabs moduleId={this.state.activeModuleId}/>
         </div>
       </div>
     </div>

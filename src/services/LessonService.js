@@ -21,6 +21,17 @@ export default class LessonService {
             })
     }
 
+    findAllLessons() {
+        return fetch(LESSON_API_URL, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "GET"
+        }).then(function (response) {
+            return response.json();
+        });
+    }
+
     // createModule(courseId, module) {
     //     return fetch(MODULE_API_URL.replace('CID', courseId),
     //         {
