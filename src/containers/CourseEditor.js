@@ -9,6 +9,7 @@ export default class CourseEditor
     super(props)
     this.state = {
         courseId: '',
+        courseTitle: '',
         activeModuleId: null
     }
     this.selectCourse = this.selectCourse.bind(this);
@@ -25,7 +26,6 @@ export default class CourseEditor
   }
 
   changeActiveModule(moduleId) {
-    console.log("setting new module to " + moduleId);
     this.setState({activeModuleId: moduleId});
   }
 

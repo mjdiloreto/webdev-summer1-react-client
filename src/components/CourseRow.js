@@ -25,6 +25,9 @@ class CourseRow extends React.Component {
           </Link>
         </td>
         <td>
+            {this.props.course.modified}
+        </td>
+        <td>
           <i className="fa fa-trash" onClick={this.deleteCourse}
              title="delete module" style={{fontSize: 20, cursor: 'pointer'}}/>
         </td>

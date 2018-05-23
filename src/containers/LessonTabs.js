@@ -15,6 +15,7 @@ export default class LessonTabs extends React.Component {
         this.titleChanged = this.titleChanged.bind(this);
         this.createLesson = this.createLesson.bind(this);
         this.renderLessons = this.renderLessons.bind(this);
+        this.deleteLesson = this.deleteLesson.bind(this);
     }
 
     componentDidMount() {
@@ -32,12 +33,6 @@ export default class LessonTabs extends React.Component {
     }
 
     findLessonsForModule(moduleId) {
-        // this.lessonService.findAllLessons()
-        // .then((lessons) => {
-        //     console.log(lessons);
-        //     this.setState({lessons: lessons})
-        // });
-
         // No module has been selected
         if(moduleId === null) {
             return;
@@ -46,27 +41,42 @@ export default class LessonTabs extends React.Component {
         this.lessonService.findAllLessonsForModule(moduleId)
             .then((lessons) => {
                 this.setState({lessons: lessons});
+                console.log(this.state.lessons);
             });
     }
 
     createLesson() {
-        alert("created a lesson {" + this.state.title + "}")
+        if(this.state.moduleId) {
+            this.lessonService.createLesson(this.state.moduleId, {title: this.state.title})
+                .then(() => this.findLessonsForModule(this.state.moduleId));
+        }
+        else {
+            alert("You must select a Module from the list to add a lesson.")
+        }
     }
 
     titleChanged(event) {
         this.setState({title: event.target.value});
     }
 
+    deleteLesson(event) {
+        let id = event.currentTarget.id
+        this.lessonService.deleteLesson(id)
+        .then(() => this.findLessonsForModule(this.state.moduleId))
+    }
+
     renderLessons() {
-        console.log("lessons");
-        console.log(this.state.lessons)
         let lessons = this.state.lessons.map((lesson) => {
-          return <li className="nav-item"><a className="nav-link active"
-                                             href="#">{lesson.title}</a></li>
+            return <li className="nav-item">
+                <div className="btn-group">
+                    <a className="nav-link active" href="#">{lesson.title}</a>
+                    <button id={lesson.id} type="button" className="btn btn-danger" onClick={this.deleteLesson}>
+                        <i className="fa fa-times"></i>
+                    </button>
+                </div>
+            </li>
         });
         return lessons
-        // let l = "" + JSON.stringify(this.state);
-        // return <p>{l}</p>;
     }
 
     render() { return(

@@ -32,24 +32,23 @@ export default class LessonService {
         });
     }
 
-    // createModule(courseId, module) {
-    //     return fetch(MODULE_API_URL.replace('CID', courseId),
-    //         {
-    //             body: JSON.stringify(module),
-    //             headers: { 'Content-Type': 'application/json' },
-    //             method: 'POST'
-    //         }).then(function (response)
-    //     { return response.json(); })
-    // }
-    //
-    // deleteModule(moduleId) {
-    //     console.log("attempting to delete module")
-    //     return fetch(HOST + '/api/module/' + moduleId,
-    //         {
-    //             method: "DELETE"
-    //         }
-    //     )
-    // }
+    createLesson(moduleId, lesson) {
+        return fetch(NESTED_API_URL.replace('CID', 0).replace('MID', moduleId),
+            {
+                body: JSON.stringify(lesson),
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST'
+            }).then(function (response)
+        { return response.json(); })
+    }
+
+    deleteLesson(lessonId) {
+        return fetch(LESSON_API_URL + "/" + lessonId,
+            {
+                method: "DELETE"
+            }
+        )
+    }
 
     static get instance() {
         if(!this[_singleton])
