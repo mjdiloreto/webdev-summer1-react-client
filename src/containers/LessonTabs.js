@@ -75,19 +75,18 @@ export default class LessonTabs extends React.Component {
 
     renderLessons() {
         let lessons = this.state.lessons.map((lesson) => {
-            //let li = this.state.activeLesson ? <li className="nav-item"> : <li className="nav-item">
-            let middlePart =
+            return (
+                <li className="nav-item" onClick={() => this.setActiveLesson(lesson.id)}>
                 <div className="btn-group">
-                    <a className="nav-link">{lesson.title}</a>
+                    <a className= {this.state.activeLesson === lesson.id ?
+                        "nav-link bg-primary text-white"
+                        : "nav-link"}>{lesson.title}</a>
                     <button id={lesson.id} type="button" className="btn btn-danger" onClick={this.deleteLesson}>
                         <i className="fa fa-times"></i>
                     </button>
-                </div>;
-
-            return this.state.activeLesson === lesson.id
-                ? <li className="nav-item bg-primary text-white" onClick={() => this.setActiveLesson(lesson.id)}>{middlePart}</li>
-                : <li className="nav-item" onClick={() => this.setActiveLesson(lesson.id)}>{middlePart}</li>
-
+                </div>
+                </li>
+            )
         });
         return lessons
     }
