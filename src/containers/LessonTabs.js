@@ -9,6 +9,7 @@ export default class LessonTabs extends React.Component {
             moduleId: props.moduleId,
             title: "",
             lessons: [],
+            activeLesson: null
         }
         this.lessonService = LessonService.instance;
 
@@ -25,6 +26,10 @@ export default class LessonTabs extends React.Component {
 
     setModuleId(moduleId) {
         this.setState({moduleId: moduleId})
+    }
+
+    setActiveLesson(lessonId) {
+        this.setState({activeLesson: lessonId});
     }
 
     componentWillReceiveProps(newProps){
@@ -67,14 +72,19 @@ export default class LessonTabs extends React.Component {
 
     renderLessons() {
         let lessons = this.state.lessons.map((lesson) => {
-            return <li className="nav-item">
+            //let li = this.state.activeLesson ? <li className="nav-item"> : <li className="nav-item">
+            let middlePart =
                 <div className="btn-group">
-                    <a className="nav-link active" href="#">{lesson.title}</a>
+                    <a className="nav-link">{lesson.title}</a>
                     <button id={lesson.id} type="button" className="btn btn-danger" onClick={this.deleteLesson}>
                         <i className="fa fa-times"></i>
                     </button>
-                </div>
-            </li>
+                </div>;
+
+            return this.state.activeLesson === lesson.id
+                ? <li className="nav-item bg-primary text-white" onClick={() => this.setActiveLesson(lesson.id)}>{middlePart}</li>
+                : <li className="nav-item" onClick={() => this.setActiveLesson(lesson.id)}>{middlePart}</li>
+
         });
         return lessons
     }

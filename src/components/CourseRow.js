@@ -25,7 +25,7 @@ class CourseRow extends React.Component {
           </Link>
         </td>
         <td>
-            {this.props.course.modified}
+            {this.props.course.modified ? new Date(this.props.course.modified).toLocaleDateString() : ""}
         </td>
         <td>
           <i className="fa fa-trash" onClick={this.deleteCourse}

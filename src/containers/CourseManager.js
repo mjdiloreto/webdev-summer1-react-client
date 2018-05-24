@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import CourseEditor from './CourseEditor'
 import CourseList from "./CourseList";
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
 export default class CourseManager
   extends Component {
@@ -11,7 +11,7 @@ export default class CourseManager
         <div className="container-fluid">
 
           <nav className="navbar navbar-dark bg-primary">
-            <a className="text-white navbar-brand container-fullwidth">Course Manager</a>
+            <Link to="/" className="text-white navbar-brand container-fullwidth">Course Manager</Link>
           </nav>
 
           <Route exact path="/"
