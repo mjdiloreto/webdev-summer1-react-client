@@ -65,9 +65,12 @@ export default class LessonTabs extends React.Component {
     }
 
     deleteLesson(event) {
-        let id = event.currentTarget.id
-        this.lessonService.deleteLesson(id)
-        .then(() => this.findLessonsForModule(this.state.moduleId))
+        var conf = window.confirm("Are you sure you want to delete the lesson?");
+        if (conf) {
+            let id = event.currentTarget.id
+            this.lessonService.deleteLesson(id)
+                .then(() => this.findLessonsForModule(this.state.moduleId))
+        }
     }
 
     renderLessons() {
