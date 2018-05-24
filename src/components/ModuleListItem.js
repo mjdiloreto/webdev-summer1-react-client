@@ -16,8 +16,10 @@ export default class ModuleListItem
   }
 
   deleteModule() {
-    this.moduleService.deleteModule(this.props.module.id)
-        .then(this.props.unmount(this.props.module.id));
+    if(window.confirm("Are you sure you want to delete the module?")) {
+        this.moduleService.deleteModule(this.props.module.id)
+            .then(this.props.unmount(this.props.module.id));
+    }
   }
 
   setActive() {
@@ -32,7 +34,7 @@ export default class ModuleListItem
         <span className="float-right">
           <i className="fa fa-trash" onClick={this.deleteModule} title="delete module" style={iconStyle}></i>
           <i  title="delete module" style={iconStyle}>   </i>
-          <i className="fa fa-pencil" title="edit module" style={iconStyle}></i>
+          {/*<i className="fa fa-pencil" title="edit module" style={iconStyle}></i>*/}
         </span>
       </li>
     );

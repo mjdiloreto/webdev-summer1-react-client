@@ -11,8 +11,10 @@ class CourseRow extends React.Component {
   }
 
   deleteCourse() {
-      this.courseService.deleteCourse(this.props.course.id).then(
-          () => this.props.unmount(this.props.course.id));
+      if(window.confirm("Are you sure you want to delete the course?")) {
+          this.courseService.deleteCourse(this.props.course.id).then(
+              () => this.props.unmount(this.props.course.id));
+      }
   }
 
   render() {
