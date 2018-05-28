@@ -1,5 +1,4 @@
-
-const HOST = 'https://fast-ocean-68598.herokuapp.com'
+const HOST = 'https://fast-ocean-68598.herokuapp.com';
 const MODULE_API_URL = HOST + '/api/course/CID/module';
 
 let _singleton = Symbol();

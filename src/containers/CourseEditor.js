@@ -2,6 +2,10 @@ import React from 'react'
 import ModuleList from './ModuleList'
 import LessonTabs from './LessonTabs'
 import CourseService from "../services/CourseService";
+import WidgetApp from "./widgetList";
+import {createStore} from "redux";
+import {widgetReducer} from "../reducers/widgetReducer";
+import {Provider} from "react-redux";
 
 export default class CourseEditor
   extends React.Component {
@@ -36,7 +40,10 @@ export default class CourseEditor
     this.setState({activeModuleId: moduleId});
   }
 
-  render() { return(
+  render() {
+      let store = createStore(widgetReducer);
+
+      return(
     <div>
       <h2>Editing course: {this.state.course.title}</h2>
       <div className="row">
@@ -46,6 +53,9 @@ export default class CourseEditor
         </div>
         <div className="col-8">
           <LessonTabs moduleId={this.state.activeModuleId}/>
+            <Provider store={store}>
+                <WidgetApp/>
+            </Provider>
         </div>
       </div>
     </div>
