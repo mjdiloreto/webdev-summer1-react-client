@@ -62,38 +62,50 @@ const Widget = ({widget, preview, dispatch}) => {
         {/*<div className="container"*/}
              {/*style={{border: "1px solid gray", borderCornerShape: "curve", borderRadius: "5px",*/}
                  {/*padding:"10px"}}>*/}
-      <div hidden={preview}>
-      {widget.id} {widget.widgetType}
+      <div className="row" hidden={preview}>
+        {/*{widget.order} {widget.name}*/}
 
-      <select className="custom-select"
-              value={widget.widgetType}
-              onChange={e =>
-          dispatch({
-            type: 'SELECT_WIDGET_TYPE',
-            id: widget.id,
-            widgetType: selectElement.value
-          })} ref={node => selectElement = node}>
-        <option>Heading</option>
-        <option>Paragraph</option>
-        <option>List</option>
-        <option>Image</option>
-      </select>
+          <div className="col-1">
+              <i className = "fa fa-chevron-up"></i>
+              <i className = "fa fa-chevron-down"></i>
+          </div>
 
-      <button className = "btn btn-danger"
-              onClick={e => (
-        dispatch({type: DELETE_WIDGET, id: widget.id})
-      )}>Delete</button>
+          <div className="col-5">
+          <select className="custom-select"
+                  value={widget.name}
+                  onChange={e =>
+              dispatch({
+                type: 'SELECT_WIDGET_TYPE',
+                id: widget.id,
+                name: selectElement.value
+              })} ref={node => selectElement = node}>
+            <option>Select One</option>
+            <option>Heading</option>
+            <option>Paragraph</option>
+            <option>List</option>
+            <option>Image</option>
+          </select>
+          </div>
+
+          <div className="col-2">
+              <button className = "btn btn-danger"
+                      onClick={e => (
+                dispatch({type: DELETE_WIDGET, id: widget.id})
+              )}>Delete</button>
+          </div>
       </div>
+
       <div>
-        {widget.widgetType==='Heading' && <HeadingContainer widget={widget}/>}
-        {widget.widgetType==='Paragraph' && <Paragraph/>}
-        {widget.widgetType==='List' && <List/>}
-        {widget.widgetType==='Image' && <Image/>}
+        {widget.name==='Heading' && <HeadingContainer widget={widget}/>}
+        {widget.name==='Paragraph' && <Paragraph/>}
+        {widget.name==='List' && <List/>}
+        {widget.name==='Image' && <Image/>}
       </div>
         {/*</div>*/}
     </li>
   )
 }
+
 const WidgetContainer = connect(state => ({
   preview: state.preview
 }))(Widget)

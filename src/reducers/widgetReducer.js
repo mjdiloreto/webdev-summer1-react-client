@@ -7,41 +7,39 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
   switch (action.type) {
 
     case constants.PREVIEW:
-      return {
-        widgets: state.widgets,
-        preview: !state.preview
-      }
+        newState = Object.assign({}, state);
+        newState.preview = !state.preview;
+        return newState;
 
     case constants.HEADING_TEXT_CHANGED:
-      return {
-        widgets: state.widgets.map(widget => {
-          if(widget.id === action.id) {
-            widget.text = action.text
-          }
-          return Object.assign({}, widget)
-        })
-      };
+        newState = Object.assign({}, state);
+        newState.widgets = state.widgets.map(widget => {
+            if(widget.id === action.id) {
+                widget.text = action.text
+            }
+            return Object.assign({}, widget)
+        });
+        return newState;
 
     case constants.HEADING_SIZE_CHANGED:
-      return {
-        widgets: state.widgets.map(widget => {
+        newState = Object.assign({}, state);
+        newState.widgets = state.widgets.map(widget => {
           if(widget.id === action.id) {
-            widget.size = action.size
+              widget.size = action.size
           }
           return Object.assign({}, widget)
-        })
-      }
+        });
+        return newState;
 
-    case constants.SELECT_WIDGET_TYPE:
-      newState = {
-        widgets: state.widgets.filter((widget) => {
-          if(widget.id === action.id) {
-            widget.widgetType = action.widgetType
-          }
-          return true;
-        })
-      }
-      return JSON.parse(JSON.stringify(newState))
+      case constants.SELECT_WIDGET_TYPE:
+        newState = Object.assign({}, state);
+        newState.widgets = state.widgets.filter((widget) => {
+            if(widget.id === action.id) {
+                widget.name = action.name
+            }
+            return true;
+        });
+        return JSON.parse(JSON.stringify(newState))
 
     case constants.SAVE:
       fetch(constants.HOST + '/api/lesson/' + state.activeLessonId + '/widgets', {
@@ -71,7 +69,7 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
           ...state.widgets,
           {
             text: 'New Widget',
-            widgetType: 'Paragraph',
+            name: 'Paragraph',
             size: '2'
           }
         ]

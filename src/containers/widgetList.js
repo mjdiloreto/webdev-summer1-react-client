@@ -20,13 +20,10 @@ class WidgetList extends Component {
   }
 
   render() {
-      console.log(this.props)
     return(
         <div>
             {this.props.activeLessonId &&
             <div>
-                <h1>Widgets For Lesson: {this.props.activeLessonId}</h1>
-
                 <button className="btn" hidden={this.props.previewMode} onClick={this.props.save}>
                     Save
                 </button>
