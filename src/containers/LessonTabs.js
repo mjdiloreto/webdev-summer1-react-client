@@ -47,7 +47,6 @@ export default class LessonTabs extends React.Component {
         this.lessonService.findAllLessonsForModule(moduleId)
             .then((lessons) => {
                 this.setState({lessons: lessons});
-                console.log(this.state.lessons);
             });
     }
 

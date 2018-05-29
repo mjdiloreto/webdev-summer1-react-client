@@ -29,7 +29,6 @@ class CourseService {
         })
   }
   createCourse(course) {
-    console.log("going to server")
     return fetch(COURSE_API_URL, {
       body: JSON.stringify(course),
       headers: {
@@ -37,7 +36,6 @@ class CourseService {
       },
       method: 'POST'
     }).then(function (response) {
-      console.log("created the course")
       return response.json();
     })
   }

@@ -55,7 +55,6 @@ class CourseList extends React.Component {
     });
   }
   createCourse() {
-    console.log("attempting to create course")
     this.courseService
       .createCourse(this.state.course)
       .then(() => this.setState({course: {"title": this.state.course.title, modified: new Date()}}))

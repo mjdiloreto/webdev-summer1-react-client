@@ -33,9 +33,11 @@ export const preview = dispatch => (
   dispatch({type: constants.PREVIEW})
 )
 export const changeActiveLesson = (dispatch, newLessonId) => {
-    console.log("ran this")
+    if(newLessonId === null) {
+        return;
+    }
 
-    return fetch(HOST + '/api/lesson/' + newLessonId + '/widget')
+    fetch(HOST + '/api/lesson/' + newLessonId + '/widget')
         .then(response => (response.json()))
         .then(widgets => dispatch(
             {type: constants.ACTIVE_LESSON_CHANGED,

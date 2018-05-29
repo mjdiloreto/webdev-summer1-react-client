@@ -32,20 +32,21 @@ export default class CourseEditor
   selectCourse(courseId) {
     this.courseService.findCourseById(courseId).then(
         (course) => {
-          console.log(course);
           this.setState({courseId: courseId, course: course})
         }
     );
   }
 
   changeActiveModule(moduleId) {
-    this.setState({activeModuleId: moduleId});
+      // reset the active lesson
+      this.changeActiveLesson(null);
+
+      this.setState({activeModuleId: moduleId});
   }
 
   changeActiveLesson(lessonId) {
     this.setState({activeLessonId: lessonId})
   }
-
 
     render() {
       let store = createStore(widgetReducer);

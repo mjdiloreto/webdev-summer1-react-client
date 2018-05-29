@@ -70,7 +70,6 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
         widgets: [
           ...state.widgets,
           {
-            id: state.widgets.length + 1,
             text: 'New Widget',
             widgetType: 'Paragraph',
             size: '2'

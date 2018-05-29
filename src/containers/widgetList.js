@@ -14,39 +14,35 @@ class WidgetList extends Component {
   // to the store, since it already maintains its own state, this method is used.
   componentWillReceiveProps(newProps) {
       if(newProps.activeLessonId === this.props.activeLessonId) {
-          console.log("lesson did not change");
       } else {
-          console.log("lesson id changing")
           this.props.changeActiveLesson(newProps.activeLessonId);
       }
   }
 
   render() {
-
-      let widgetList =
-          <div>
-              <h1>Widgets For Lesson: {this.props.activeLessonId}</h1>
-
-              <button className="btn" hidden={this.props.previewMode} onClick={this.props.save}>
-                  Save
-              </button>
-              <button className="btn" onClick={this.props.preview}>
-                  Preview
-              </button>
-
-              <ul className="list-group">
-                  {this.props.widgets.map(widget => (
-                      <WidgetContainer widget={widget}
-                                       preview={this.props.previewMode}
-                                       key={widget.id}/>
-                  ))}
-              </ul>
-              <button className="btn btn-success" onClick={this.props.addWidget}>Add widget</button>
-          </div>
-
+      console.log(this.props)
     return(
         <div>
-            {this.props.activeLessonId && widgetList}
+            {this.props.activeLessonId &&
+            <div>
+                <h1>Widgets For Lesson: {this.props.activeLessonId}</h1>
+
+                <button className="btn" hidden={this.props.previewMode} onClick={this.props.save}>
+                    Save
+                </button>
+                <button className="btn" onClick={this.props.preview}>
+                    Preview
+                </button>
+
+                <ul className="list-group">
+                    {this.props.widgets.map(widget => (
+                        <WidgetContainer widget={widget}
+                                         preview={this.props.previewMode}
+                                         key={widget.id}/>
+                    ))}
+                </ul>
+                <button className="btn btn-success" onClick={this.props.addWidget}>Add widget</button>
+            </div>}
         </div>
     )
   }
