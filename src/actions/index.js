@@ -3,9 +3,9 @@ import * as constants from "../constants/index"
 const HOST1 = 'https://fast-ocean-68598.herokuapp.com'
 const HOST = 'http://localhost:8080'
 
-export const headingTextChanged = (dispatch, widgetId, newText) => (
+export const widgetTextChanged = (dispatch, widgetId, newText) => (
   dispatch({
-    type: constants.HEADING_TEXT_CHANGED,
+    type: constants.WIDGET_TEXT_CHANGED,
     id: widgetId,
     text: newText})
 )

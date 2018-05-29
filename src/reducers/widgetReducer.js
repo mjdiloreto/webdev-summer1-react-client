@@ -11,7 +11,7 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
         newState.preview = !state.preview;
         return newState;
 
-    case constants.HEADING_TEXT_CHANGED:
+    case constants.WIDGET_TEXT_CHANGED:
         newState = Object.assign({}, state);
         newState.widgets = state.widgets.map(widget => {
             if(widget.id === action.id) {

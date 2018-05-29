@@ -3,14 +3,14 @@ import {connect} from 'react-redux'
 import {DELETE_WIDGET} from "../constants/index"
 import * as actions from '../actions'
 
-const Heading = ({widget, preview, headingTextChanged, headingSizeChanged}) => {
+const Heading = ({widget, preview, widgetTextChanged, headingSizeChanged}) => {
   let selectElem;
   let inputElem;
   return(
       <div>
       <div hidden={preview}>
         <h2> Heading {widget.size}</h2>
-          <input onChange={() => headingTextChanged(widget.id, inputElem.value)}
+          <input onChange={() => widgetTextChanged(widget.id, inputElem.value)}
                  value={widget.text}
                  ref={node => inputElem = node}/>
           <select className="custom-select custom-select-sm"
@@ -21,39 +21,62 @@ const Heading = ({widget, preview, headingTextChanged, headingSizeChanged}) => {
             <option value="2">Heading 2</option>
             <option value="3">Heading 3</option>
           </select>
-          <h3>Preview</h3>
       </div>
-      {widget.size === 1 && <h1>{widget.text}</h1>}
-      {widget.size === 2 && <h2>{widget.text}</h2>}
-      {widget.size === 3 && <h3>{widget.text}</h3>}
+
+      <div hidden={!preview}>
+          {widget.size == 1 && <h1>{widget.text}</h1>}
+          {widget.size == 2 && <h2>{widget.text}</h2>}
+          {widget.size == 3 && <h3>{widget.text}</h3>}
+      </div>
     </div>
   )
 }
-const dispathToPropsMapper = dispatch => ({
-  headingTextChanged: (widgetId, newText) =>
-    actions.headingTextChanged(dispatch, widgetId, newText),
-  headingSizeChanged: (widgetId, newSize) =>
-    actions.headingSizeChanged(dispatch, widgetId, newSize)
-})
-const stateToPropsMapper = state => ({
-  preview: state.preview
-})
-const HeadingContainer = connect(stateToPropsMapper, dispathToPropsMapper)(Heading)
 
-const Paragraph = () => (
-  <div>
-    <h2>Paragraph</h2>
-    <textarea></textarea>
-  </div>
-)
+const Paragraph = ({widget, preview, widgetTextChanged}) => {
+    let textAreaElem;
 
-const Image = () => (
+    console.log("preview is")
+    console.log(preview)
+
+    return (
+        <div>
+        <div hidden={preview}>
+            <h2>Paragraph</h2>
+            <textarea
+                value={widget.text}
+                onChange={() => widgetTextChanged(widget.id, textAreaElem.value)}
+                ref={node => textAreaElem = node}/>
+        </div>
+        <div hidden={!preview}>
+            <p>{widget.text}</p>
+        </div>
+        </div>
+
+)}
+
+const Image = ({widget, preview}) => (
   <h2>Image</h2>
 )
 
-const List = () => (
+const List = (widget, preview) => (
   <h2>List</h2>
 )
+
+const dispatchToPropsMapper = dispatch => ({
+    widgetTextChanged: (widgetId, newText) =>
+        actions.widgetTextChanged(dispatch, widgetId, newText),
+    headingSizeChanged: (widgetId, newSize) =>
+        actions.headingSizeChanged(dispatch, widgetId, newSize),
+})
+const stateToPropsMapper = state => ({
+    preview: state.preview
+})
+const HeadingContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Heading)
+const ParagraphContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Paragraph)
+const ImageContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Image)
+const ListContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(List)
+
+
 
 const Widget = ({widget, preview, dispatch}) => {
   let selectElement
@@ -97,9 +120,9 @@ const Widget = ({widget, preview, dispatch}) => {
 
       <div>
         {widget.name==='Heading' && <HeadingContainer widget={widget}/>}
-        {widget.name==='Paragraph' && <Paragraph/>}
-        {widget.name==='List' && <List/>}
-        {widget.name==='Image' && <Image/>}
+        {widget.name==='Paragraph' && <ParagraphContainer widget={widget}/>}
+        {widget.name==='List' && <ListContainer widget={widget}/>}
+        {widget.name==='Image' && <ImageContainer widget={widget}/>}
       </div>
         {/*</div>*/}
     </li>
