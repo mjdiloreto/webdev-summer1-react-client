@@ -15,12 +15,14 @@ export default class CourseEditor
     this.state = {
         courseId: '',
         activeModuleId: null,
-        course: {title: ''}
+        course: {title: ''},
+        activeLessonId: null
     }
 
     this.courseService = CourseService.instance;
     this.selectCourse = this.selectCourse.bind(this);
     this.changeActiveModule = this.changeActiveModule.bind(this);
+    this.changeActiveLesson = this.changeActiveLesson.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +42,12 @@ export default class CourseEditor
     this.setState({activeModuleId: moduleId});
   }
 
-  render() {
+  changeActiveLesson(lessonId) {
+    this.setState({activeLessonId: lessonId})
+  }
+
+
+    render() {
       let store = createStore(widgetReducer);
 
       return(
@@ -52,9 +59,10 @@ export default class CourseEditor
             onActiveModuleChange={this.changeActiveModule.bind(this)}/>
         </div>
         <div className="col-8">
-          <LessonTabs moduleId={this.state.activeModuleId}/>
+          <LessonTabs moduleId={this.state.activeModuleId}
+                      onActiveLessonChange={this.changeActiveLesson.bind(this)}/>
             <Provider store={store}>
-                <WidgetApp/>
+                <WidgetApp activeLessonId={this.state.activeLessonId}/>
             </Provider>
         </div>
       </div>

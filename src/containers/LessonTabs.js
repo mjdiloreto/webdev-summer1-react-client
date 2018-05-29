@@ -29,6 +29,7 @@ export default class LessonTabs extends React.Component {
     }
 
     setActiveLesson(lessonId) {
+        this.props.onActiveLessonChange(lessonId);
         this.setState({activeLesson: lessonId});
     }
 

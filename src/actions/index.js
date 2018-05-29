@@ -1,5 +1,8 @@
 import * as constants from "../constants/index"
 
+const HOST1 = 'https://fast-ocean-68598.herokuapp.com'
+const HOST = 'http://localhost:8080'
+
 export const headingTextChanged = (dispatch, widgetId, newText) => (
   dispatch({
     type: constants.HEADING_TEXT_CHANGED,
@@ -14,7 +17,7 @@ export const headingSizeChanged = (dispatch, widgetId, newSize) => (
 )
 
 export const findAllWidgets = dispatch => {
-  fetch('http://localhost:8080/api/widget')
+  fetch(HOST + '/api/widget')
     .then(response => (response.json()))
     .then(widgets => dispatch({
       type: constants.FIND_ALL_WIDGETS,
@@ -29,3 +32,15 @@ export const save = dispatch => (
 export const preview = dispatch => (
   dispatch({type: constants.PREVIEW})
 )
+export const changeActiveLesson = (dispatch, newLessonId) => {
+    console.log("ran this")
+
+    return fetch(HOST + '/api/lesson/' + newLessonId + '/widget')
+        .then(response => (response.json()))
+        .then(widgets => dispatch(
+            {type: constants.ACTIVE_LESSON_CHANGED,
+                activeLessonId: newLessonId,
+                widgets: widgets}
+            )
+        )
+}

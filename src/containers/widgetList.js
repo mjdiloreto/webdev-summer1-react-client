@@ -5,31 +5,49 @@ import WidgetContainer from '../components/widget'
 
 class WidgetList extends Component {
   constructor(props) {
-    super(props)
-    this.props.findAllWidgets()
+    super(props);
   }
+
+  // This is almost certainly a bad way of doing this.
+  // The CourseEditor renders this component with a certain activeLessonId,
+  // But the id is not in the store! Instead of connecting the CourseEditor
+  // to the store, since it already maintains its own state, this method is used.
+  componentWillReceiveProps(newProps) {
+      if(newProps.activeLessonId === this.props.activeLessonId) {
+          console.log("lesson did not change");
+      } else {
+          console.log("lesson id changing")
+          this.props.changeActiveLesson(newProps.activeLessonId);
+      }
+  }
+
   render() {
+
+      let widgetList =
+          <div>
+              <h1>Widgets For Lesson: {this.props.activeLessonId}</h1>
+
+              <button className="btn" hidden={this.props.previewMode} onClick={this.props.save}>
+                  Save
+              </button>
+              <button className="btn" onClick={this.props.preview}>
+                  Preview
+              </button>
+
+              <ul className="list-group">
+                  {this.props.widgets.map(widget => (
+                      <WidgetContainer widget={widget}
+                                       preview={this.props.previewMode}
+                                       key={widget.id}/>
+                  ))}
+              </ul>
+              <button className="btn btn-success" onClick={this.props.addWidget}>Add widget</button>
+          </div>
+
     return(
-      <div>
-        <h1>Widgets For Lesson: [placeholder]</h1>
-
-        <button hidden={this.props.previewMode} onClick={this.props.save}>
-          Save
-        </button>
-        <button onClick={this.props.preview}>
-          Preview
-        </button>
-
-        <ul className="list-group">
-          {this.props.widgets.map(widget => (
-              <WidgetContainer widget={widget}
-                               preview={this.props.previewMode}
-                               key={widget.id}/>
-          ))}
-        </ul>
-        <button onClick={this.props.addWidget}>Add widget
-        </button>
-       </div>
+        <div>
+            {this.props.activeLessonId && widgetList}
+        </div>
     )
   }
 }
@@ -37,14 +55,17 @@ class WidgetList extends Component {
 const stateToPropertiesMapper = (state) => ({
   widgets: state.widgets,
   previewMode: state.preview
-})
+});
+
 const dispatcherToPropsMapper
   = dispatch => ({
   findAllWidgets: () => actions.findAllWidgets(dispatch),
   addWidget: () => actions.addWidget(dispatch),
   save: () => actions.save(dispatch),
-  preview: () => actions.preview(dispatch)
-})
+  preview: () => actions.preview(dispatch),
+  changeActiveLesson: (newLessonId) => actions.changeActiveLesson(dispatch, newLessonId)
+});
+
 const WidgetApp = connect(
   stateToPropertiesMapper,
   dispatcherToPropsMapper)(WidgetList)

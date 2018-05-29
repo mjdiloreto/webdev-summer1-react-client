@@ -1,6 +1,6 @@
 let _singleton = Symbol();
-const COURSE_API_URL =
-  'https://fast-ocean-68598.herokuapp.com/api/course';
+const COURSE_API_URL1 = 'https://fast-ocean-68598.herokuapp.com/api/course';
+const COURSE_API_URL = 'http://localhost:8080/api/course';
 
 class CourseService {
   constructor(singletonToken) {
@@ -15,7 +15,11 @@ class CourseService {
   findAllCourses() {
     return fetch(COURSE_API_URL)
       .then(function(response){
-        return response.json();
+        if (response) {
+          return response.json();
+        } else {
+          return [];
+        }
       });
   }
   findCourseById(courseId) {
@@ -25,6 +29,7 @@ class CourseService {
         })
   }
   createCourse(course) {
+    console.log("going to server")
     return fetch(COURSE_API_URL, {
       body: JSON.stringify(course),
       headers: {
@@ -32,6 +37,7 @@ class CourseService {
       },
       method: 'POST'
     }).then(function (response) {
+      console.log("created the course")
       return response.json();
     })
   }

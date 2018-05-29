@@ -6,6 +6,11 @@ class CourseList extends React.Component {
   constructor() {
     super();
     this.courseService = CourseService.instance;
+
+    this.state = {
+      courses: []
+    }
+
     this.titleChanged = this.titleChanged.bind(this);
     this.createCourse = this.createCourse.bind(this);
     this.unmountRow = this.unmountRow.bind(this);
@@ -50,6 +55,7 @@ class CourseList extends React.Component {
     });
   }
   createCourse() {
+    console.log("attempting to create course")
     this.courseService
       .createCourse(this.state.course)
       .then(() => this.setState({course: {"title": this.state.course.title, modified: new Date()}}))

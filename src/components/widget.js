@@ -13,7 +13,8 @@ const Heading = ({widget, preview, headingTextChanged, headingSizeChanged}) => {
           <input onChange={() => headingTextChanged(widget.id, inputElem.value)}
                  value={widget.text}
                  ref={node => inputElem = node}/>
-          <select onChange={() => headingSizeChanged(widget.id, selectElem.value)}
+          <select className="custom-select custom-select-sm"
+                  onChange={() => headingSizeChanged(widget.id, selectElem.value)}
                   value={widget.size}
                   ref={node => selectElem = node}>
             <option value="1">Heading 1</option>
@@ -64,7 +65,8 @@ const Widget = ({widget, preview, dispatch}) => {
       <div hidden={preview}>
       {widget.id} {widget.widgetType}
 
-      <select value={widget.widgetType}
+      <select className="custom-select"
+              value={widget.widgetType}
               onChange={e =>
           dispatch({
             type: 'SELECT_WIDGET_TYPE',
@@ -77,7 +79,8 @@ const Widget = ({widget, preview, dispatch}) => {
         <option>Image</option>
       </select>
 
-      <button onClick={e => (
+      <button className = "btn btn-danger"
+              onClick={e => (
         dispatch({type: DELETE_WIDGET, id: widget.id})
       )}>Delete</button>
       </div>

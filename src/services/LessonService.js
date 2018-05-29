@@ -1,5 +1,6 @@
 
-const HOST = 'https://fast-ocean-68598.herokuapp.com'
+const HOST1 = 'https://fast-ocean-68598.herokuapp.com'
+const HOST = 'http://localhost:8080'
 const LESSON_API_URL = HOST + '/api/lesson'
 const NESTED_API_URL = HOST + '/api/course/CID/module/MID/lesson';
 
