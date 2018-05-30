@@ -23,6 +23,7 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
 
       // Used to change any attribute of a widget
       case constants.WIDGET_ATTR_CHANGED:
+          console.log(action)
           newState = Object.assign({}, state);
           newState.widgets = state.widgets.map(widget => {
               if(widget.id === action.id) {
@@ -74,17 +75,24 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
       };
 
       case constants.ADD_WIDGET:
-      return {
-          ...state,
-        widgets: [
-          ...state.widgets,
-          {
-            text: 'New Widget',
-            name: 'Paragraph',
-            size: '2'
-          }
-        ]
-      };
+          let lastWidgetOrder = state.widgets.reduce(
+              (acc, widget) => acc > widget.order ? widget.order : acc
+          )
+          console.log("lastWidgetOrder is ")
+          console.log(lastWidgetOrder)
+
+          return {
+              ...state,
+            widgets: [
+              ...state.widgets,
+              {
+                text: 'New Widget',
+                name: 'Paragraph',
+                size: '2',
+                order: lastWidgetOrder + 1
+              }
+            ]
+          };
 
       case constants.ACTIVE_LESSON_CHANGED:
           newState = Object.assign({}, state);

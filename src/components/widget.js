@@ -2,6 +2,7 @@ import React from  'react'
 import {connect} from 'react-redux'
 import {DELETE_WIDGET} from "../constants/index"
 import * as actions from '../actions'
+import {widgetAttrChanged} from "../actions/index";
 
 const Heading = ({widget, preview, widgetTextChanged, headingSizeChanged}) => {
   let selectElem;
@@ -82,7 +83,13 @@ const dispatchToPropsMapper = dispatch => ({
         actions.headingSizeChanged(dispatch, widgetId, newSize),
 
     widgetAttrChanged: (widgetId, attr, newVal) =>
-        actions.widgetAttrChanged(dispatch, widgetId, attr, newVal)
+        actions.widgetAttrChanged(dispatch, widgetId, attr, newVal),
+
+    deleteWidget: (widgetId) =>
+        actions.deleteWidget(dispatch, widgetId),
+
+    selectWidgetType: (widgetId, name) =>
+        actions.selectWidgetType(dispatch, widgetId, name)
 })
 const stateToPropsMapper = state => ({
     preview: state.preview
@@ -94,7 +101,7 @@ const ListContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(List)
 
 
 
-const Widget = ({widget, preview, dispatch}) => {
+const Widget = ({widget, preview, deleteWidget, selectWidgetType, widgetAttrChanged}) => {
   let selectElement
   return(
     <li className="list-group-item">
@@ -105,19 +112,20 @@ const Widget = ({widget, preview, dispatch}) => {
         {/*{widget.order} {widget.name}*/}
 
           <div className="col-1">
-              <i className = "fa fa-chevron-up"></i>
-              <i className = "fa fa-chevron-down"></i>
+              <i className = "fa fa-chevron-up"
+                 style={{fontSize: 20, cursor: 'pointer'}}
+                 onClick={() => widgetAttrChanged(widget.id, "order", widget.order ? widget.order - 1 : 0)}/>
+              {/*TODO widget order can go further than anticipated*/}
+              <i className = "fa fa-chevron-down"
+                 style={{fontSize: 20, cursor: 'pointer'}}
+                 onClick={() => widgetAttrChanged(widget.id, "order", widget.order ? widget.order + 1 : 1)}/>
           </div>
 
           <div className="col-5">
           <select className="custom-select"
                   value={widget.name}
-                  onChange={e =>
-              dispatch({
-                type: 'SELECT_WIDGET_TYPE',
-                id: widget.id,
-                name: selectElement.value
-              })} ref={node => selectElement = node}>
+                  ref={node => selectElement = node}
+                  onChange={() => selectWidgetType(widget.id, selectElement.value)}>
             <option>Select One</option>
             <option>Heading</option>
             <option>Paragraph</option>
@@ -128,9 +136,7 @@ const Widget = ({widget, preview, dispatch}) => {
 
           <div className="col-2">
               <button className = "btn btn-danger"
-                      onClick={e => (
-                dispatch({type: DELETE_WIDGET, id: widget.id})
-              )}>Delete</button>
+                      onClick={() => deleteWidget(widget.id)}>Delete</button>
           </div>
       </div>
 
@@ -145,7 +151,5 @@ const Widget = ({widget, preview, dispatch}) => {
   )
 }
 
-const WidgetContainer = connect(state => ({
-  preview: state.preview
-}))(Widget)
+const WidgetContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Widget)
 export default WidgetContainer

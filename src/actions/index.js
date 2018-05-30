@@ -32,6 +32,16 @@ export const findAllWidgets = dispatch => {
 export const addWidget = dispatch => (
   dispatch({type: constants.ADD_WIDGET})
 )
+export const deleteWidget = (dispatch, widgetId) => (
+    dispatch({type: constants.DELETE_WIDGET, id: widgetId})
+)
+export const selectWidgetType = (dispatch, widgetId, text) => (
+    dispatch({
+        type: 'SELECT_WIDGET_TYPE',
+        id: widgetId,
+        name: text
+    })
+)
 export const save = dispatch => (
   dispatch({type: constants.SAVE})
 )
