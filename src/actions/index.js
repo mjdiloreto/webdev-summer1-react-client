@@ -15,7 +15,13 @@ export const headingSizeChanged = (dispatch, widgetId, newSize) => (
     id: widgetId,
     size: newSize})
 )
-
+export const widgetAttrChanged = (dispatch, widgetId, attr, newValue) => (
+    dispatch({
+        type: constants.WIDGET_ATTR_CHANGED,
+        id: widgetId,
+        attr: attr,
+        newValue: newValue})
+)
 export const findAllWidgets = dispatch => {
   fetch(HOST + '/api/widget')
     .then(response => (response.json()))

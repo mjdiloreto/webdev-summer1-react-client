@@ -21,6 +21,17 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
         });
         return newState;
 
+      // Used to change any attribute of a widget
+      case constants.WIDGET_ATTR_CHANGED:
+          newState = Object.assign({}, state);
+          newState.widgets = state.widgets.map(widget => {
+              if(widget.id === action.id) {
+                  widget[action.attr] = action.newValue
+              }
+              return Object.assign({}, widget)
+          });
+          return newState;
+
     case constants.HEADING_SIZE_CHANGED:
         newState = Object.assign({}, state);
         newState.widgets = state.widgets.map(widget => {

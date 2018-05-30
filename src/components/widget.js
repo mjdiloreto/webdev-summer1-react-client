@@ -35,9 +35,6 @@ const Heading = ({widget, preview, widgetTextChanged, headingSizeChanged}) => {
 const Paragraph = ({widget, preview, widgetTextChanged}) => {
     let textAreaElem;
 
-    console.log("preview is")
-    console.log(preview)
-
     return (
         <div>
         <div hidden={preview}>
@@ -54,9 +51,24 @@ const Paragraph = ({widget, preview, widgetTextChanged}) => {
 
 )}
 
-const Image = ({widget, preview}) => (
-  <h2>Image</h2>
+const Image = ({widget, preview, widgetAttrChanged}) => {
+    let inputElem;
+
+    return (
+    <div>
+        <div hidden={preview}>
+            <h2>Image</h2>
+            <input onChange={() => widgetAttrChanged(widget.id, "src", inputElem.value)}
+                   value={widget.src}
+                   ref={node => inputElem = node}/>
+        </div>
+
+        <div hidden={!preview}>
+            <img src={widget.src}/>
+        </div>
+    </div>
 )
+}
 
 const List = (widget, preview) => (
   <h2>List</h2>
@@ -65,8 +77,12 @@ const List = (widget, preview) => (
 const dispatchToPropsMapper = dispatch => ({
     widgetTextChanged: (widgetId, newText) =>
         actions.widgetTextChanged(dispatch, widgetId, newText),
+
     headingSizeChanged: (widgetId, newSize) =>
         actions.headingSizeChanged(dispatch, widgetId, newSize),
+
+    widgetAttrChanged: (widgetId, attr, newVal) =>
+        actions.widgetAttrChanged(dispatch, widgetId, attr, newVal)
 })
 const stateToPropsMapper = state => ({
     preview: state.preview
