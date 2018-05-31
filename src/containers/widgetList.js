@@ -33,7 +33,6 @@ class WidgetList extends Component {
 
                 <ul className="list-group">
                     {this.props.widgets
-                        .sort(orderComparator)
                         .map(widget => (
                         <WidgetContainer widget={widget}
                                          preview={this.props.previewMode}
@@ -45,16 +44,6 @@ class WidgetList extends Component {
         </div>
     )
   }
-}
-
-const orderComparator = (a, b) => {
-    if (a.order !== undefined && a.order !== null
-    && b.order !== undefined && b.order !== null) {
-        if(a.order < b.order) {
-            return -1;
-        }
-    }
-    return 1;
 }
 
 const stateToPropertiesMapper = (state) => ({

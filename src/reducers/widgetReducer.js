@@ -23,7 +23,6 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
 
       // Used to change any attribute of a widget
       case constants.WIDGET_ATTR_CHANGED:
-          console.log(action)
           newState = Object.assign({}, state);
           newState.widgets = state.widgets.map(widget => {
               if(widget.id === action.id) {
@@ -33,7 +32,17 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
           });
           return newState;
 
-    case constants.HEADING_SIZE_CHANGED:
+      case constants.MOVE_WIDGET_UP:
+          newState = Object.assign({}, state);
+          newState.widgets = moveWidgetUp(action.id, action.oldOrder, newState.widgets);
+          return JSON.parse(JSON.stringify(newState));
+
+      case constants.MOVE_WIDGET_DOWN:
+          newState = Object.assign({}, state);
+          newState.widgets = moveWidgetDown(action.id, action.oldOrder, newState.widgets);
+          return JSON.parse(JSON.stringify(newState));
+
+      case constants.HEADING_SIZE_CHANGED:
         newState = Object.assign({}, state);
         newState.widgets = state.widgets.map(widget => {
           if(widget.id === action.id) {
@@ -75,11 +84,7 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
       };
 
       case constants.ADD_WIDGET:
-          let lastWidgetOrder = state.widgets.reduce(
-              (acc, widget) => acc > widget.order ? widget.order : acc
-          )
-          console.log("lastWidgetOrder is ")
-          console.log(lastWidgetOrder)
+          let newOrder = state.widgets.length;
 
           return {
               ...state,
@@ -87,9 +92,10 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
               ...state.widgets,
               {
                 text: 'New Widget',
-                name: 'Paragraph',
+                name: 'Heading',
                 size: '2',
-                order: lastWidgetOrder + 1
+                listType: '1',
+                order: newOrder
               }
             ]
           };
@@ -103,4 +109,37 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
     default:
       return state
   }
+}
+
+const moveWidgetUp = (widgetId, oldOrder, widgets) => {
+    return JSON.parse(JSON.stringify(widgets.map((widget) => {
+            let newWidget = Object.assign({}, widget);;
+
+            if(widget.id === widgetId) {
+                widget.order ? newWidget.order = widget.order - 1 : newWidget.order = widget.order;
+                return newWidget;
+            } if (widget.order === oldOrder - 1) {  // swap places with the widget that moved
+                newWidget.order = oldOrder;
+                return newWidget;
+            }
+            return newWidget;
+        }
+    )));
+}
+
+const moveWidgetDown = (widgetId, oldOrder, widgets) => {
+    let length = widgets.length;
+    return JSON.parse(JSON.stringify(widgets.map((widget) => {
+            let newWidget = Object.assign({}, widget);
+
+            if(widget.id === widgetId) {
+                widget.order === length ? newWidget.order = widget.order : newWidget.order = widget.order + 1;
+                return newWidget;
+            } if (widget.order === oldOrder + 1) {  // swap places with the widget that moved
+                newWidget.order = oldOrder;
+                return newWidget;
+            }
+            return newWidget;
+        }
+    )));
 }

@@ -35,6 +35,13 @@ export const addWidget = dispatch => (
 export const deleteWidget = (dispatch, widgetId) => (
     dispatch({type: constants.DELETE_WIDGET, id: widgetId})
 )
+export const moveWidgetUp = (dispatch, widgetId, oldOrder) => {
+    dispatch({type: constants.MOVE_WIDGET_UP, id: widgetId, oldOrder: oldOrder})
+}
+export const moveWidgetDown = (dispatch, widgetId, oldOrder) => {
+    dispatch({type: constants.MOVE_WIDGET_DOWN, id: widgetId, oldOrder: oldOrder})
+}
+
 export const selectWidgetType = (dispatch, widgetId, text) => (
     dispatch({
         type: 'SELECT_WIDGET_TYPE',

@@ -71,9 +71,69 @@ const Image = ({widget, preview, widgetAttrChanged}) => {
 )
 }
 
-const List = (widget, preview) => (
-  <h2>List</h2>
-)
+const Link = ({widget, preview, widgetAttrChanged}) => {
+    let hrefInputElem;
+    let textInputElem;
+
+    return (
+        <div>
+            <div hidden={preview}>
+                <h2>Link</h2>
+                <input onChange={() => widgetAttrChanged(widget.id, "href", hrefInputElem.value)}
+                       value={widget.href}
+                       placeholder="url"
+                       ref={node => hrefInputElem = node}/>
+                <input onChange={() => widgetAttrChanged(widget.id, "text", textInputElem.value)}
+                       value={widget.text}
+                       placeholder="link text"
+                       ref={node => textInputElem = node}/>
+            </div>
+
+            <div hidden={!preview}>
+                <a href={widget.href}>{widget.text}</a>
+            </div>
+        </div>
+    )
+};
+
+const List = ({widget, preview, widgetAttrChanged}) => {
+    let inputElem;
+    let selectElem;
+
+    return (
+        <div>
+            <div hidden={preview}>
+                <h2>List</h2>
+                <select className="custom-select custom-select-sm"
+                        onChange={() => widgetAttrChanged(widget.id, "listType", selectElem.value)}
+                        value={widget.listType}
+                        ref={node => selectElem = node}>
+                    <option value="1">Ordered List</option>
+                    <option value="2">Unordered List</option>
+                </select>
+                <textarea onChange={() => widgetAttrChanged(widget.id, "listItems",
+                    inputElem.value.replace(/\n/g, "\\\\n"))}
+                       value={widget.listItems.replace(/\\\\n/g, "\n")}
+                       ref={node => inputElem = node}/>
+            </div>
+
+            <div hidden={!preview}>
+                {widget.listType == 1 &&
+                <ol>
+                    {widget.listItems && widget.listItems.split("\\\\n").map((line) =>
+                        <li>{line}</li>
+                    )}
+                </ol>}
+                {widget.listType == 2 &&
+                <ul>
+                    {widget.listItems && widget.listItems.split("\\\\n").map((line) =>
+                        <li>{line}</li>
+                    )}
+                </ul>}
+            </div>
+        </div>
+    )
+};
 
 const dispatchToPropsMapper = dispatch => ({
     widgetTextChanged: (widgetId, newText) =>
@@ -89,36 +149,45 @@ const dispatchToPropsMapper = dispatch => ({
         actions.deleteWidget(dispatch, widgetId),
 
     selectWidgetType: (widgetId, name) =>
-        actions.selectWidgetType(dispatch, widgetId, name)
-})
+        actions.selectWidgetType(dispatch, widgetId, name),
+
+    moveWidgetUp: (widgetId, oldOrder) => {
+        actions.moveWidgetUp(dispatch, widgetId, oldOrder)
+    },
+
+    moveWidgetDown: (widgetId, oldOrder) =>
+    {
+        actions.moveWidgetDown(dispatch, widgetId, oldOrder)
+    }
+});
+
 const stateToPropsMapper = state => ({
-    preview: state.preview
-})
-const HeadingContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Heading)
-const ParagraphContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Paragraph)
-const ImageContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Image)
-const ListContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(List)
+    preview: state.preview,
+    widgets: state.widgets
+});
+
+const HeadingContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Heading);
+const ParagraphContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Paragraph);
+const ImageContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Image);
+const ListContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(List);
+const LinkContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Link);
 
 
-
-const Widget = ({widget, preview, deleteWidget, selectWidgetType, widgetAttrChanged}) => {
-  let selectElement
+const Widget = ({widget, widgets, preview, deleteWidget, selectWidgetType, widgetAttrChanged,
+                moveWidgetUp, moveWidgetDown}) => {
+  let selectElement;
   return(
     <li className="list-group-item">
-        {/*<div className="container"*/}
-             {/*style={{border: "1px solid gray", borderCornerShape: "curve", borderRadius: "5px",*/}
-                 {/*padding:"10px"}}>*/}
+
       <div className="row" hidden={preview}>
-        {/*{widget.order} {widget.name}*/}
 
           <div className="col-1">
               <i className = "fa fa-chevron-up"
                  style={{fontSize: 20, cursor: 'pointer'}}
-                 onClick={() => widgetAttrChanged(widget.id, "order", widget.order ? widget.order - 1 : 0)}/>
-              {/*TODO widget order can go further than anticipated*/}
+                 onClick={() => {moveWidgetUp(widget.id, widget.order)}}/>
               <i className = "fa fa-chevron-down"
                  style={{fontSize: 20, cursor: 'pointer'}}
-                 onClick={() => widgetAttrChanged(widget.id, "order", widget.order ? widget.order + 1 : 1)}/>
+                 onClick={() => {moveWidgetDown(widget.id, widget.order)}}/>
           </div>
 
           <div className="col-5">
@@ -130,6 +199,7 @@ const Widget = ({widget, preview, deleteWidget, selectWidgetType, widgetAttrChan
             <option>Heading</option>
             <option>Paragraph</option>
             <option>List</option>
+            <option>Link</option>
             <option>Image</option>
           </select>
           </div>
@@ -144,12 +214,12 @@ const Widget = ({widget, preview, deleteWidget, selectWidgetType, widgetAttrChan
         {widget.name==='Heading' && <HeadingContainer widget={widget}/>}
         {widget.name==='Paragraph' && <ParagraphContainer widget={widget}/>}
         {widget.name==='List' && <ListContainer widget={widget}/>}
+        {widget.name==='Link' && <LinkContainer widget={widget}/>}
         {widget.name==='Image' && <ImageContainer widget={widget}/>}
       </div>
-        {/*</div>*/}
     </li>
   )
-}
+};
 
-const WidgetContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Widget)
+const WidgetContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Widget);
 export default WidgetContainer
