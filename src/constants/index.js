@@ -1,5 +1,5 @@
-export const HOST = "http://localhost:8080"
-export const HOST1 = 'https://fast-ocean-68598.herokuapp.com'
+export const HOST1= "http://localhost:8080"
+export const HOST = 'https://fast-ocean-68598.herokuapp.com'
 
 export const WIDGET_ATTR_CHANGED = 'WIDGET_ATTR_CHANGED'
 export const HEADING_SIZE_CHANGED = 'HEADING_SIZE_CHANGED'

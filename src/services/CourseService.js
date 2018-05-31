@@ -1,6 +1,6 @@
 let _singleton = Symbol();
-const COURSE_API_URL1 = 'https://fast-ocean-68598.herokuapp.com/api/course';
-const COURSE_API_URL = 'http://localhost:8080/api/course';
+const COURSE_API_URL = 'https://fast-ocean-68598.herokuapp.com/api/course';
+const COURSE_API_URL1 = 'http://localhost:8080/api/course';
 
 class CourseService {
   constructor(singletonToken) {
