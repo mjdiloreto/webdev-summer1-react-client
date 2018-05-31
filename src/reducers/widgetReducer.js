@@ -35,11 +35,13 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
       case constants.MOVE_WIDGET_UP:
           newState = Object.assign({}, state);
           newState.widgets = moveWidgetUp(action.id, action.oldOrder, newState.widgets);
+          newState.widgets.sort(orderComparator)
           return JSON.parse(JSON.stringify(newState));
 
       case constants.MOVE_WIDGET_DOWN:
           newState = Object.assign({}, state);
           newState.widgets = moveWidgetDown(action.id, action.oldOrder, newState.widgets);
+          newState.widgets.sort(orderComparator)
           return JSON.parse(JSON.stringify(newState));
 
       case constants.HEADING_SIZE_CHANGED:
@@ -112,7 +114,7 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
 }
 
 const moveWidgetUp = (widgetId, oldOrder, widgets) => {
-    return JSON.parse(JSON.stringify(widgets.map((widget) => {
+    return widgets.map((widget) => {
             let newWidget = Object.assign({}, widget);;
 
             if(widget.id === widgetId) {
@@ -124,16 +126,16 @@ const moveWidgetUp = (widgetId, oldOrder, widgets) => {
             }
             return newWidget;
         }
-    )));
+    );
 }
 
 const moveWidgetDown = (widgetId, oldOrder, widgets) => {
     let length = widgets.length;
-    return JSON.parse(JSON.stringify(widgets.map((widget) => {
+    return widgets.map((widget) => {
             let newWidget = Object.assign({}, widget);
 
             if(widget.id === widgetId) {
-                widget.order === length ? newWidget.order = widget.order : newWidget.order = widget.order + 1;
+                widget.order === length - 1 ? newWidget.order = widget.order : newWidget.order = widget.order + 1;
                 return newWidget;
             } if (widget.order === oldOrder + 1) {  // swap places with the widget that moved
                 newWidget.order = oldOrder;
@@ -141,5 +143,15 @@ const moveWidgetDown = (widgetId, oldOrder, widgets) => {
             }
             return newWidget;
         }
-    )));
+    );
+}
+
+const orderComparator = (a, b) => {
+    if (a.order !== undefined && a.order !== null
+        && b.order !== undefined && b.order !== null) {
+        if(a.order < b.order) {
+            return -1;
+        }
+    }
+    return 1;
 }
