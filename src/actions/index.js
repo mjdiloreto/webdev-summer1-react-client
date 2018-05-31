@@ -1,7 +1,7 @@
 import * as constants from "../constants/index"
 
-const HOST1 = 'https://fast-ocean-68598.herokuapp.com'
-const HOST = 'http://localhost:8080'
+const HOST = 'https://fast-ocean-68598.herokuapp.com'
+const HOST1 = 'http://localhost:8080'
 
 export const widgetTextChanged = (dispatch, widgetId, newText) => (
   dispatch({
