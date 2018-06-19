@@ -97,7 +97,14 @@ export const widgetReducer = (state = {widgets: [], activeLessonId: null, previe
                 name: 'Heading',
                 size: '2',
                 listType: '1',
-                order: newOrder
+                listItems: "",
+                order: newOrder,
+                className: null,
+                style: null,
+                width: null,
+                height: null,
+                src: null,
+                href: null,
               }
             ]
           };

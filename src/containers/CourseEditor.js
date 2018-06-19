@@ -11,7 +11,7 @@ export default class CourseEditor
   extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
         courseId: '',
         activeModuleId: null,
